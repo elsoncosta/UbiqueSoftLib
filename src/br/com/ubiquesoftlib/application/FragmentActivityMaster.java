@@ -58,6 +58,19 @@ public class FragmentActivityMaster extends SherlockFragmentActivity
 		startActivity(intent);
 	}
 	
+	//Abre uma nova activity
+	protected void show(Class<?> cls) 
+	{
+		Intent intent = new Intent(this, cls);
+		startActivity(intent);
+	}
+	
+	protected void showRoot(Class<?> cls) {
+		Intent intent = new Intent(this, cls);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+	}
+	
 	
 	//seta os valores de um textview
 	protected void setText(int id, String s) 
