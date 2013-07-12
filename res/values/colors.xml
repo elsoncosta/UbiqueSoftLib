@@ -24,7 +24,8 @@
     <color name="android_blue">#6fc2f7</color>
     <color name="honeycombish_blue">#FF58BAED</color>
     <color name="soft_grey">#FF777777</color>
-    <color name="background">#FFEFEFEF</color> 
+    <color name="background">#FFEFEFEF</color>
+    <color name="vermelho">#FF0000</color>  
     
 	<color name="message">#FFFFFF</color>
     <color name="alert">#CC0000</color>

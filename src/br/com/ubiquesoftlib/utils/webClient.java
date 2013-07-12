@@ -1,6 +1,8 @@
 package br.com.ubiquesoftlib.utils;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,7 +48,16 @@ public class webClient {
 		List<String> ret = null;
 		int status = 0;
 	
-		HttpClient httpclient = new DefaultHttpClient();
+//		HttpClient httpclient = new DefaultHttpClient();
+		
+		int timeoutConnection = 3000;
+		int timeoutSocket = 5000;
+		
+		HttpParams httpParams = new BasicHttpParams(); 
+		HttpConnectionParams.setConnectionTimeout(httpParams, timeoutConnection);
+		HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket); 
+		HttpClient httpclient = new DefaultHttpClient(httpParams);
+		
 		
 		HttpGet httpget = new HttpGet(url);
 		httpget.setHeader("Accept", "application/json");
@@ -67,7 +78,8 @@ public class webClient {
 
 				if (entity != null)
 				{
-					InputStream instream = entity.getContent();
+					InputStream instream = entity.getContent();					
+					
 					String result = new String(inputStream.getBytes(instream));
 
 					instream.close();
