@@ -1,8 +1,10 @@
 package br.com.ubiquesoftlib.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import android.app.Activity;
 
@@ -10,26 +12,26 @@ public class OpenFile
 {
 	public static String json(File file, Activity activity) 
 	{
-        String json = null;
-        try {
+        StringBuilder json = new StringBuilder();
+        try {             
+            
+            FileInputStream fIn = new FileInputStream(file);
+            InputStreamReader isr = new InputStreamReader ( fIn ) ;
+            BufferedReader buffreader = new BufferedReader ( isr ) ;
 
-            InputStream is =  activity.getResources().getAssets().open(file.getAbsolutePath());
+            String readString = buffreader.readLine();
+            while ( readString != null) 
+            {
+                readString = buffreader.readLine();
+            }
 
-            int size = is.available();
-
-            byte[] buffer = new byte[size];
-
-            is.read(buffer);
-
-            is.close();
-
-            json = new String(buffer, "UTF-8");
+            isr.close ( ) ;
 
         } catch (IOException e) 
         {
         	Logs.LogError("OpenFile.Json", e.toString());
             return null;
         }
-        return json;
+        return json.toString();
     }
 }

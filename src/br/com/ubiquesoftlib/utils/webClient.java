@@ -1,8 +1,7 @@
 package br.com.ubiquesoftlib.utils;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,10 +44,10 @@ public class webClient {
 	 */	
 	public List<String> get()
 	{		
-		List<String> ret = null;
+		Log.i(getClass().getName(), "Iniciado");
+		
+		List<String> ret = new ArrayList<String>();
 		int status = 0;
-	
-//		HttpClient httpclient = new DefaultHttpClient();
 		
 		int timeoutConnection = 3000;
 		int timeoutSocket = 5000;
@@ -58,13 +57,74 @@ public class webClient {
 		HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket); 
 		HttpClient httpclient = new DefaultHttpClient(httpParams);
 		
+		HttpGet httpget = new HttpGet(url);
+		httpget.setHeader("Accept", "application/json");
+		httpget.setHeader("Content-type", "application/json");
+		httpget.setHeader(name_auth, auth_token);
+
+		try 
+		{
+			HttpResponse response = httpclient.execute(httpget);
+			
+			status = response.getStatusLine().getStatusCode();
+
+			if (status != 0) 
+			{
+				HttpEntity entity = response.getEntity();
+
+				if (entity != null)
+				{				
+					String result = new String(new inputStream().getBytes(entity.getContent()));
+					
+					Log.i("resultado get", result);
+					
+					ret.add(Integer.toString(status));
+					
+					Log.i(getClass().getName() + "Status: ", Integer.toString(status));
+					
+					ret.add(result);
+					
+					Log.i(getClass().getName(), new StringBuilder().append("get: ").append(ret.toString()).toString());
+					
+					return ret;
+				}
+			}
+			
+			Log.i(getClass().getName(), "Finalizado com sucesso.");
+			
+		} catch (Exception e) 
+		{
+			Logs.LogError(getClass(), e.getMessage());			
+			return ret;
+		}
+		
+		return ret = Arrays.asList(Integer.toString(status));
+	}
+	
+	/**
+	 * @param json
+	 * @return
+	 * 0 tipy return; ex: autorized 200 or 400, 401
+	 * 1 return InputStream
+	 */	
+	public InputStream getInputStream()
+	{		
+		Log.i(getClass().getName(), "Iniciado");
+		
+		int status = 0;
+		
+		int timeoutConnection = 3000;
+		int timeoutSocket = 5000;
+		
+		HttpParams httpParams = new BasicHttpParams(); 
+		HttpConnectionParams.setConnectionTimeout(httpParams, timeoutConnection);
+		HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket); 
+		HttpClient httpclient = new DefaultHttpClient(httpParams);
 		
 		HttpGet httpget = new HttpGet(url);
 		httpget.setHeader("Accept", "application/json");
 		httpget.setHeader("Content-type", "application/json");
 		httpget.setHeader(name_auth, auth_token);
-		
-		inputStream inputStream = new inputStream();
 
 		try 
 		{
@@ -78,26 +138,20 @@ public class webClient {
 
 				if (entity != null)
 				{
-					InputStream instream = entity.getContent();					
-					
-					String result = new String(inputStream.getBytes(instream));
-
-					instream.close();
-					
-					ret = Arrays.asList(Integer.toString(status), result);
-					Log.i(getClass().getName(), new StringBuilder().append("get: ").append(ret.toString()).toString());
-					
-					return ret;
+					Log.i(getClass().getName(), "Status: " + Integer.toString(status));
+					Log.i(getClass().getName(), "Finalizado com sucesso.");
+					return entity.getContent();
 				}
 			}
+			
 			
 		} catch (Exception e) 
 		{
 			Logs.LogError(getClass(), e.getMessage());			
-			return ret;
+			return null;
 		}
 		
-		return ret = Arrays.asList(Integer.toString(status));
+		return null;
 	}
 	
 	/**
