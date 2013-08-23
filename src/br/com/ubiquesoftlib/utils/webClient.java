@@ -124,6 +124,7 @@ public class webClient {
 		HttpGet httpget = new HttpGet(url);
 		httpget.setHeader("Accept", "application/json");
 		httpget.setHeader("Content-type", "application/json");
+//		httpget.setHeader("Content-type", "text/htm");
 		httpget.setHeader(name_auth, auth_token);
 
 		try 
