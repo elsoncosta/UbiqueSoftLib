@@ -11,5 +11,6 @@
     <string name="erro_servidor">Erro servidor</string>
     <string name="nao_autorizado">Não autorizado.</string>
     <string name="sucesso">Sucesso.</string>
+    <string name="not_conect_internet">Não há conexão com a internet.</string>
     
 </resources>

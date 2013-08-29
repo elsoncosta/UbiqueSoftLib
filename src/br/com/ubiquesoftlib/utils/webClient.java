@@ -1,8 +1,8 @@
 package br.com.ubiquesoftlib.utils;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -107,11 +107,11 @@ public class webClient {
 	 * 0 tipy return; ex: autorized 200 or 400, 401
 	 * 1 return InputStream
 	 */	
-	public InputStream getInputStream()
+	public HashMap<Integer, Object> getInputStream()
 	{		
 		Log.i(getClass().getName(), "Iniciado");
 		
-		int status = 0;
+		HashMap<Integer, Object>  map = new HashMap<Integer, Object>();
 		
 		int timeoutConnection = 3000;
 		int timeoutSocket = 5000;
@@ -130,18 +130,18 @@ public class webClient {
 		try 
 		{
 			HttpResponse response = httpclient.execute(httpget);
-			
-			status = response.getStatusLine().getStatusCode();
 
-			if (status != 0) 
+			if (response.getStatusLine().getStatusCode() != 0) 
 			{
 				HttpEntity entity = response.getEntity();
 
 				if (entity != null)
 				{
-					Log.i(getClass().getName(), "Status: " + Integer.toString(status));
+					Log.i(getClass().getName(), "Status: " + Integer.toString(response.getStatusLine().getStatusCode()));
 					Log.i(getClass().getName(), "Finalizado com sucesso.");
-					return entity.getContent();
+					map.put(0, response.getStatusLine().getStatusCode());
+					map.put(1, entity.getContent());
+					return map;
 				}
 			}
 			

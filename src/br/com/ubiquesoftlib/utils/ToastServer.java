@@ -17,6 +17,9 @@ public class ToastServer
             case 401:
             		ToastAlerta.showConfirm(activity, R.string.nao_autorizado, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);
                     break;
+            case 0:
+        		ToastAlerta.showConfirm(activity, R.string.not_conect_internet, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);
+                break;
             default:
                 	ToastAlerta.showAlert(activity, R.string.erro_servidor, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);
                     break;
