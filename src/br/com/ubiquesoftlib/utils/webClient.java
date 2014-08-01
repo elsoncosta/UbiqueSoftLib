@@ -29,6 +29,11 @@ public class webClient {
 	private final String url;
 	private String auth_token;
 	public String name_auth = "name_auth";
+	public String email;
+	public String senha;
+	
+	int timeoutConnection = 60000;
+	int timeoutSocket = 60000;
 	
 	public webClient(String url, String auth_token)
 	{
@@ -49,9 +54,6 @@ public class webClient {
 		List<String> ret = new ArrayList<String>();
 		int status = 0;
 		
-		int timeoutConnection = 3000;
-		int timeoutSocket = 5000;
-		
 		HttpParams httpParams = new BasicHttpParams(); 
 		HttpConnectionParams.setConnectionTimeout(httpParams, timeoutConnection);
 		HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket); 
@@ -61,6 +63,8 @@ public class webClient {
 		httpget.setHeader("Accept", "application/json");
 		httpget.setHeader("Content-type", "application/json");
 		httpget.setHeader(name_auth, auth_token);
+		httpget.setHeader("email", email);
+		httpget.setHeader("senha", senha);
 
 		try 
 		{
@@ -113,19 +117,23 @@ public class webClient {
 		
 		HashMap<Integer, Object>  map = new HashMap<Integer, Object>();
 		
-		int timeoutConnection = 3000;
-		int timeoutSocket = 5000;
+//		HttpParams httpParams = new BasicHttpParams(); 
+//		HttpConnectionParams.setConnectionTimeout(httpParams, timeoutConnection);
+//		HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket); 
+//		HttpClient httpclient = new DefaultHttpClient(httpParams);
 		
-		HttpParams httpParams = new BasicHttpParams(); 
-		HttpConnectionParams.setConnectionTimeout(httpParams, timeoutConnection);
-		HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket); 
-		HttpClient httpclient = new DefaultHttpClient(httpParams);
+		HttpClient httpclient = new DefaultHttpClient();
+		httpclient.getParams().setBooleanParameter("http.tcp.nodelay", false);
+		httpclient.getParams().setIntParameter("http.socket.timeout",    timeoutSocket);
+		httpclient.getParams().setIntParameter("http.connection.timeout", 4000);
 		
 		HttpGet httpget = new HttpGet(url);
 		httpget.setHeader("Accept", "application/json");
 		httpget.setHeader("Content-type", "application/json");
 //		httpget.setHeader("Content-type", "text/htm");
 		httpget.setHeader(name_auth, auth_token);
+		httpget.setHeader("email", email);
+		httpget.setHeader("senha", senha);
 
 		try 
 		{
@@ -161,15 +169,67 @@ public class webClient {
 	 * 0 tipy return; ex: autorized 200 or 400, 401
 	 * 1 return json
 	 */	
+	public HashMap<Integer, Object>  postIputStream(String json)
+	{		
+		HashMap<Integer, Object>  map = new HashMap<Integer, Object>();
+		
+		try
+		{			
+			HttpParams httpParams = new BasicHttpParams(); 
+			HttpConnectionParams.setConnectionTimeout(httpParams, timeoutConnection);
+			HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket); 
+			HttpClient httpClient = new DefaultHttpClient(httpParams);            
+			
+			
+			HttpPost post = new HttpPost(url);
+			post.setEntity(new StringEntity(json, "utf-8")) ;
+			
+			post.setHeader("Accept", "application/json");
+			post.setHeader("Content-type", "application/json; charset=UTF-8");
+			post.setHeader(name_auth, auth_token);
+			post.setHeader("email", email);
+			post.setHeader("senha", senha);
+			
+			HttpResponse response = httpClient.execute(post);
+
+			if (response.getStatusLine().getStatusCode() != 0) 
+			{
+				HttpEntity entity = response.getEntity();
+
+				if (entity != null)
+				{
+					Log.i(getClass().getName(), "Status: " + Integer.toString(response.getStatusLine().getStatusCode()));
+					Log.i(getClass().getName(), "Finalizado com sucesso.");
+//					Log.i(getClass().getName(), "Resposta: " + EntityUtils.toString(entity));
+					
+					map.put(0, response.getStatusLine().getStatusCode());
+					map.put(1, entity);
+					
+					return map;
+				}
+			}
+			
+		} catch (Exception e) 
+		{
+			Logs.LogError(getClass(), e.getMessage());			
+			return map;
+		}
+		return map;
+	}
+	
+	
+	/**
+	 * @param json
+	 * @return
+	 * 0 tipy return; ex: autorized 200 or 400, 401
+	 * 1 return json
+	 */	
 	public List<String> post(String json)
 	{		
 		List<String> ret = null;
 		
 		try
-		{
-			int timeoutConnection = 3000;
-			int timeoutSocket = 5000;
-			
+		{			
 			HttpParams httpParams = new BasicHttpParams(); 
 			HttpConnectionParams.setConnectionTimeout(httpParams, timeoutConnection);
 			HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket); 
@@ -182,6 +242,8 @@ public class webClient {
 			post.setHeader("Accept", "application/json");
 			post.setHeader("Content-type", "application/json");
 			post.setHeader(name_auth, auth_token);
+			post.setHeader("email", email);
+			post.setHeader("senha", senha);
 			
 			HttpResponse response = httpClient.execute(post);
 			
@@ -198,6 +260,8 @@ public class webClient {
 		}
 	}
 	
+	
+	
 	/**
 	 * @param json
 	 * @return
@@ -209,10 +273,7 @@ public class webClient {
 		List<String> ret = null;
 		
 		try
-		{
-			int timeoutConnection = 3000;
-			int timeoutSocket = 5000;
-			
+		{			
 			HttpParams httpParams = new BasicHttpParams(); 
 			HttpConnectionParams.setConnectionTimeout(httpParams, timeoutConnection);
 			HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket); 

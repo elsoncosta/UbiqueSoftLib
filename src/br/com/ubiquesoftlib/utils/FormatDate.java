@@ -1,11 +1,15 @@
 package br.com.ubiquesoftlib.utils;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+@SuppressLint("SimpleDateFormat")
 public class FormatDate {
 	
 	/**
@@ -66,6 +70,30 @@ public class FormatDate {
         return "";
     }
 	
+	public static String ToString(Date data, String forString)
+    {
+		SimpleDateFormat dateFormat;
+        try 
+        {
+            if (data != null) {
+            	
+            	if (forString!= null) {					
+            		dateFormat = new SimpleDateFormat(forString);     
+				}else{
+					dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");     
+				}
+            	
+                return dateFormat.format(data);
+			}
+                
+        } catch (Exception e) 
+        {
+        	Logs.LogError("FormatDate.ToString", e.getMessage());
+        }
+        
+        return "";
+    }
+	
 	public static Date ToDate(String data)
 	{
         Date date = null; 
@@ -85,23 +113,35 @@ public class FormatDate {
         return date;
     }
 	
-
-	public static Date ToDate(Date data)
-    {
-        try 
-        {
-           if (data != null) 
-           {
-        	   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");     
-               return dateFormat.parse(dateFormat.format(data));
-           }
-                
-        } catch (Exception e) 
-        {
-        	Logs.LogError("FormatDate.Now", e.getMessage());
-        }
-        
-        return null;
-    }
+	public static Date getDateTime(Date date)
+	{	
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		System.out.println(dateFormat.format(date));
+		return date;
+	}
+	
+	public static Date getDateTime()
+	{
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		System.out.println(dateFormat.format(date));
+		return date;
+	}
+	
+	
+	public static Date somarSubtraiData(int year, int month, int day, int hour, int minute, int second)
+	{
+		GregorianCalendar gc = new GregorianCalendar();          
+        gc.setTime(new Date());            
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");        
+        gc.add(Calendar.YEAR, year); 
+        gc.add(Calendar.MONTH, month); 
+        gc.add(Calendar.DAY_OF_MONTH, day); 
+        gc.add(Calendar.HOUR, hour);  
+        gc.add(Calendar.MINUTE, minute);  
+        gc.add(Calendar.SECOND, second);            
+//        System.out.println("HORA SOMADA: " + sdf.format(gc.getTime()));
+		return gc.getTime(); 
+	}
 
 }

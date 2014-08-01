@@ -10,6 +10,7 @@
     <string name="realizado_sucesso">Realizado com sucesso.</string>
     <string name="erro_servidor">Erro servidor</string>
     <string name="nao_autorizado">Não autorizado.</string>
+    <string name="nada_foi_modificado">Nada foi alterado.</string>
     <string name="sucesso">Sucesso.</string>
     <string name="not_conect_internet">Não há conexão com a internet.</string>
     

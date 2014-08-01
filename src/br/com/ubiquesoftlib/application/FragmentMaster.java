@@ -16,6 +16,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 public class FragmentMaster extends SherlockFragment 
 {
 	private int progressId = R.id.progress;
+	private View view;
 	protected void alert(int mensagem) 
 	{
 		alertaDialog.message(getActivity(), mensagem);
@@ -77,10 +78,19 @@ public class FragmentMaster extends SherlockFragment
 		startActivity(intent);
 	}
 	
+	public void setView(View view) 
+	{
+		this.view = view;
+	}
+	
+	public View getView() 
+	{
+		return this.view;
+	}
+	
 	public View findViewById(int id) 
 	{
-		View view = getView();
-		return view != null ? view.findViewById(id) : null;
+		return this.view != null ? this.view.findViewById(id) : null;
 	}
 	
 	//Set values textview
