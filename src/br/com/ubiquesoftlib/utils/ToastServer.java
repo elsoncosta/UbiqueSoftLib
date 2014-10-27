@@ -12,13 +12,13 @@ public class ToastServer
 		switch (status) 
         {
 	        case 0:
-		        	ToastAlerta.showConfirm(activity, R.string.not_conect_internet, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);
+		        	ToastAlerta.showConfirm(activity, R.string.erro_indefinido, Gravity.BOTTOM, ToastAlerta.LENGTH_LONG);
 		        	break;
             case 200:
                     ToastAlerta.showInfor(activity, R.string.sucesso, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);                              
                     break;
             case 201:
-                ToastAlerta.showInfor(activity, R.string.sucesso, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);                              
+                ToastAlerta.showInfor(activity, R.string.criado_sucesso, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);                              
                 break;
             case 401:
             		ToastAlerta.showConfirm(activity, R.string.nao_autorizado, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);
@@ -29,9 +29,12 @@ public class ToastServer
             case 500:
             		ToastAlerta.showAlert(activity, R.string.erro_servidor, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);
                 break;
+            case 503:
+	        	ToastAlerta.showConfirm(activity, R.string.servico_indisponivel, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);
+	        	break;
             default:
-                	ToastAlerta.showAlert(activity, R.string.erro_servidor, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);
-                    break;
+            	ToastAlerta.showAlert(activity, R.string.servico_indisponivel, Gravity.BOTTOM, ToastAlerta.LENGTH_SHORT);
+            	break;
         }
 	}
 }

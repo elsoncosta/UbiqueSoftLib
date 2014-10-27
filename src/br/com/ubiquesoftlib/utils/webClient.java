@@ -126,6 +126,7 @@ public class webClient {
 		httpclient.getParams().setBooleanParameter("http.tcp.nodelay", false);
 		httpclient.getParams().setIntParameter("http.socket.timeout",    timeoutSocket);
 		httpclient.getParams().setIntParameter("http.connection.timeout", 4000);
+
 		
 		HttpGet httpget = new HttpGet(url);
 		httpget.setHeader("Accept", "application/json");
@@ -148,7 +149,7 @@ public class webClient {
 					Log.i(getClass().getName(), "Status: " + Integer.toString(response.getStatusLine().getStatusCode()));
 					Log.i(getClass().getName(), "Finalizado com sucesso.");
 					map.put(0, response.getStatusLine().getStatusCode());
-					map.put(1, entity.getContent());
+					map.put(1, entity);
 					return map;
 				}
 			}

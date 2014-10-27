@@ -13,5 +13,8 @@
     <string name="nada_foi_modificado">Nada foi alterado.</string>
     <string name="sucesso">Sucesso.</string>
     <string name="not_conect_internet">Não há conexão com a internet.</string>
+    <string name="servico_indisponivel">Serviço indisponível</string>
+    <string name="criado_sucesso">Criado com sucesso.</string>
+    <string name="erro_indefinido">Desculpe, algo deu errado e não podemos fazer isso para você agora. Tente novamente mais tarde.</string>
     
 </resources>
